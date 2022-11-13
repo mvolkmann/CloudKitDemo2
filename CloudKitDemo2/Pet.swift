@@ -1,6 +1,15 @@
 import CloudKit
 
 final class Pet: CloudKitable, Hashable, Identifiable {
+    init(name: String, ownedBy: CKRecord.Reference) {
+        record = CKRecord(
+            recordType: "Pets",
+            recordID: CKRecord.ID(zoneID: CloudKit.zone.zoneID)
+        )
+        record["name"] = name
+        record["ownedBy"] = ownedBy
+    }
+
     init(record: CKRecord) {
         self.record = record
     }
