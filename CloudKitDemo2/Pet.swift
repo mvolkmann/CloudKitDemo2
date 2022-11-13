@@ -9,7 +9,10 @@ final class Pet: CloudKitable, Hashable, Identifiable {
 
     var record: CKRecord
 
-    var name: String { record["name"] as? String ?? "" }
+    var name: String {
+        get { record["name"] as? String ?? "" }
+        set { record["name"] = newValue }
+    }
 
     // The Hashable protocol conforms to the Equatable protocol.
     // This is required by the Equatable protocol.

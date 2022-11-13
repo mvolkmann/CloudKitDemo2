@@ -8,18 +8,13 @@ protocol CloudKitable {
     // guard let item = T(record: record) else { return }
     init?(record: CKRecord)
 
-    // var recordType: String
-
     var record: CKRecord { get }
 }
 
 struct CloudKit {
     typealias Cursor = CKQueryOperation.Cursor
 
-    static var zoneID = CKRecordZone.ID(
-        zoneName: "my-zone",
-        ownerName: CKCurrentUserDefaultName
-    )
+    static var zone = CKRecordZone(zoneName: "my-zone")
 
     // MARK: - Initializer
 
@@ -102,22 +97,9 @@ struct CloudKit {
     // MARK: - CRUD Methods
 
     // "C" in CRUD.
+
     func create<T: CloudKitable>(item: T) async throws {
         try await database.save(item.record)
-    }
-
-    func create<T: CloudKitable>(
-        recordType: String,
-        recordClass: T.Type,
-        keys: [String: Any]
-    ) async throws {
-        let record = CKRecord(
-            recordType: recordType,
-            recordID: CKRecord.ID(zoneID: Self.zoneID)
-        )
-        record.setValuesForKeys(keys)
-        let item = recordClass.init(record: record)
-        try await create(item: item!)
     }
 
     func createZone(zoneID: CKRecordZone.ID) async throws {
@@ -126,6 +108,7 @@ struct CloudKit {
     }
 
     // "R" in CRUD.
+
     func retrieve<T: CloudKitable>(
         recordType: CKRecord.RecordType,
         predicate: NSPredicate = NSPredicate(value: true), // gets all
@@ -136,6 +119,7 @@ struct CloudKit {
         query.sortDescriptors = sortDescriptors
         let (results, cursor) = try await database.records(
             matching: query,
+            inZoneWith: Self.zone.zoneID,
             resultsLimit: resultsLimit
         )
 
@@ -169,6 +153,7 @@ struct CloudKit {
     }
 
     // "U" in CRUD.
+
     func update<T: CloudKitable>(item: T) async throws {
         try await database.save(item.record)
     }
@@ -181,7 +166,7 @@ struct CloudKit {
 
     func deleteAll(recordType: String) async throws {
         return try await withCheckedThrowingContinuation { continuation in
-            database.delete(withRecordZoneID: Self.zoneID) { _, error in
+            database.delete(withRecordZoneID: Self.zone.zoneID) { _, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else {
@@ -193,7 +178,7 @@ struct CloudKit {
 
     func deleteZone(zoneID: CKRecordZone.ID) async throws {
         return try await withCheckedThrowingContinuation { continuation in
-            // In iOS 16, this method requires a completion handler.
+            // In iOS 16, this method still requires a completion handler.
             database.delete(withRecordZoneID: zoneID) { _, error in
                 if let error {
                     continuation.resume(throwing: error)

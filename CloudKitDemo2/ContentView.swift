@@ -23,17 +23,19 @@ struct ContentView: View {
                 let ck = CloudKit(containerID: containerID)
                 // try await ck.deleteAll(recordType: "Pets")
                 // try await ck.deleteAll(recordType: "People")
-                try await ck.deleteZone(zoneID: CloudKit.zoneID)
-                try await ck.createZone(zoneID: CloudKit.zoneID)
+                try await ck.deleteZone(zoneID: CloudKit.zone.zoneID)
+                try await ck.createZone(zoneID: CloudKit.zone.zoneID)
 
-                try await ck.create(
-                    recordType: "People",
-                    recordClass: Person.self,
-                    keys: [
-                        "firstName": "Tamara",
-                        "lastName": "Volkmann"
-                    ]
-                )
+                // There can be a long delay (maybe a minute) until
+                // the new records appear in a CloudKit Console query!
+                let person = Person(firstName: "Tamara", lastName: "Volkmann")
+                try await ck.create(item: person)
+
+                let p2 = Person(firstName: "Amanda", lastName: "Nelson")
+                try await ck.create(item: p2)
+
+                let p3 = Person(firstName: "Jeremy", lastName: "Volkmann")
+                try await ck.create(item: p3)
             } catch {
                 print("error:", error)
             }

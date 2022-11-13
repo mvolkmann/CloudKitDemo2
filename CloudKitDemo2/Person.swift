@@ -1,17 +1,34 @@
 import CloudKit
 
 final class Person: CloudKitable, Hashable, Identifiable {
+    init(firstName: String, lastName: String) {
+        record = CKRecord(
+            recordType: "People",
+            recordID: CKRecord.ID(zoneID: CloudKit.zone.zoneID)
+        )
+        record["firstName"] = firstName
+        record["lastName"] = lastName
+    }
+
     init(record: CKRecord) {
+        // TODO: Maybe this can be assumed to be set already.
+        // record.recordType = "People"
         self.record = record
-        // recordType = "People"
     }
 
     var id: String { record.recordID.recordName }
 
     var record: CKRecord
 
-    var firstName: String { record["firstName"] as? String ?? "" }
-    var lastName: String { record["lastName"] as? String ?? "" }
+    var firstName: String {
+        get { record["firstName"] as? String ?? "" }
+        set { record["firstName"] = newValue }
+    }
+
+    var lastName: String {
+        get { record["lastName"] as? String ?? "" }
+        set { record["lastName"] = newValue }
+    }
 
     // The Hashable protocol conforms to the Equatable protocol.
     // This is required by the Equatable protocol.
