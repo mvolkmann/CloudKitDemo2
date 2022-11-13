@@ -11,6 +11,9 @@
 		1A73CCDE29200F1300D3D5D3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A73CCDD29200F1300D3D5D3 /* ContentView.swift */; };
 		1A73CCE029200F1400D3D5D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A73CCDF29200F1400D3D5D3 /* Assets.xcassets */; };
 		1A73CCE329200F1400D3D5D3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A73CCE229200F1400D3D5D3 /* Preview Assets.xcassets */; };
+		1A73CCEB292115DA00D3D5D3 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A73CCEA292115DA00D3D5D3 /* Person.swift */; };
+		1A73CCED292115E200D3D5D3 /* Pets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A73CCEC292115E200D3D5D3 /* Pets.swift */; };
+		1A73CCEF2921183200D3D5D3 /* CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A73CCEE2921183200D3D5D3 /* CloudKit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +22,10 @@
 		1A73CCDD29200F1300D3D5D3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		1A73CCDF29200F1400D3D5D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A73CCE229200F1400D3D5D3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		1A73CCE929200F3700D3D5D3 /* CloudKitDemo2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CloudKitDemo2.entitlements; sourceTree = "<group>"; };
+		1A73CCEA292115DA00D3D5D3 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		1A73CCEC292115E200D3D5D3 /* Pets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pets.swift; sourceTree = "<group>"; };
+		1A73CCEE2921183200D3D5D3 /* CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +58,12 @@
 		1A73CCDA29200F1300D3D5D3 /* CloudKitDemo2 */ = {
 			isa = PBXGroup;
 			children = (
+				1A73CCE929200F3700D3D5D3 /* CloudKitDemo2.entitlements */,
 				1A73CCDB29200F1300D3D5D3 /* CloudKitDemo2App.swift */,
 				1A73CCDD29200F1300D3D5D3 /* ContentView.swift */,
+				1A73CCEE2921183200D3D5D3 /* CloudKit.swift */,
+				1A73CCEA292115DA00D3D5D3 /* Person.swift */,
+				1A73CCEC292115E200D3D5D3 /* Pets.swift */,
 				1A73CCDF29200F1400D3D5D3 /* Assets.xcassets */,
 				1A73CCE129200F1400D3D5D3 /* Preview Content */,
 			);
@@ -138,7 +149,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A73CCDE29200F1300D3D5D3 /* ContentView.swift in Sources */,
+				1A73CCED292115E200D3D5D3 /* Pets.swift in Sources */,
+				1A73CCEB292115DA00D3D5D3 /* Person.swift in Sources */,
 				1A73CCDC29200F1300D3D5D3 /* CloudKitDemo2App.swift in Sources */,
+				1A73CCEF2921183200D3D5D3 /* CloudKit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,6 +278,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CloudKitDemo2/CloudKitDemo2.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CloudKitDemo2/Preview Content\"";
@@ -293,6 +308,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CloudKitDemo2/CloudKitDemo2.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CloudKitDemo2/Preview Content\"";
