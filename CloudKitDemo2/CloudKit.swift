@@ -14,6 +14,9 @@ protocol CloudKitable {
 struct CloudKit {
     typealias Cursor = CKQueryOperation.Cursor
 
+    // Using a custom zone enables performing batch operations
+    // such as deleting all the records of every record type.
+    // See the deleteZone method below.
     static var zone = CKRecordZone(zoneName: "my-zone")
 
     // MARK: - Initializer
@@ -102,9 +105,52 @@ struct CloudKit {
         try await database.save(item.record)
     }
 
-    func createZone(zoneID: CKRecordZone.ID) async throws {
-        let zone = CKRecordZone(zoneID: zoneID)
+    static func createRecord(recordType: String) -> CKRecord {
+        CKRecord(
+            recordType: recordType,
+            recordID: CKRecord.ID(zoneID: Self.zone.zoneID)
+        )
+    }
+
+    func createZone() async throws {
+        let zone = CKRecordZone(zoneID: Self.zone.zoneID)
         try await database.save(zone)
+    }
+
+    func recreateZone() async throws {
+        try await deleteZone()
+        try await createZone()
+    }
+
+    // "D" in CRUD.
+
+    func delete<T: CloudKitable>(item: T) async throws {
+        try await database.deleteRecord(withID: item.record.recordID)
+    }
+
+    func deleteAll(recordType: String) async throws {
+        return try await withCheckedThrowingContinuation { continuation in
+            database.delete(withRecordZoneID: Self.zone.zoneID) { _, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume()
+                }
+            }
+        }
+    }
+
+    func deleteZone() async throws {
+        return try await withCheckedThrowingContinuation { continuation in
+            // In iOS 16, this method still requires a completion handler.
+            database.delete(withRecordZoneID: Self.zone.zoneID) { _, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume()
+                }
+            }
+        }
     }
 
     // "R" in CRUD.
@@ -135,6 +181,7 @@ struct CloudKit {
         return objects
     }
 
+    // This uses a cursor to recursively retrieve all the requested records.
     private func retrieveMore<T: CloudKitable>(
         _ cursor: Cursor?, _ objects: inout [T]
     ) async throws {
@@ -156,36 +203,5 @@ struct CloudKit {
 
     func update<T: CloudKitable>(item: T) async throws {
         try await database.save(item.record)
-    }
-
-    // "D" in CRUD.
-
-    func delete<T: CloudKitable>(item: T) async throws {
-        try await database.deleteRecord(withID: item.record.recordID)
-    }
-
-    func deleteAll(recordType: String) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
-            database.delete(withRecordZoneID: Self.zone.zoneID) { _, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume()
-                }
-            }
-        }
-    }
-
-    func deleteZone(zoneID: CKRecordZone.ID) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
-            // In iOS 16, this method still requires a completion handler.
-            database.delete(withRecordZoneID: zoneID) { _, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume()
-                }
-            }
-        }
     }
 }

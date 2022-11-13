@@ -2,10 +2,7 @@ import CloudKit
 
 final class Person: CloudKitable, Hashable, Identifiable {
     init(firstName: String, lastName: String) {
-        record = CKRecord(
-            recordType: "People",
-            recordID: CKRecord.ID(zoneID: CloudKit.zone.zoneID)
-        )
+        record = CloudKit.createRecord(recordType: "People")
         record["firstName"] = firstName
         record["lastName"] = lastName
     }
