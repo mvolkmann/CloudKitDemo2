@@ -50,10 +50,6 @@ struct ContentView: View {
                     "In CloudKit Console, query records in private database and zone my-zone"
                 )
 
-                // When new records are created or records are updated, it
-                // can take up to a minute for CloudKit to index the changes.
-                // The new/modified records are not returned by
-                // subsequent queries until indexing is completed.
                 // try await retrieveRecords(ck)
             } catch {
                 print("ContentView.crud error:", error)
@@ -61,10 +57,11 @@ struct ContentView: View {
         }
     }
 
+    // When new records are created or records are updated, it
+    // can take up to a minute for CloudKit to index the changes.
+    // The new/modified records are not returned by
+    // subsequent queries until indexing is completed.
     private func retrieveRecords(_ ck: CloudKit) async throws {
-        // TODO: Why can't we immediately retrieve records
-        // TODO: we just created?  It seems we have to wait
-        // TODO: for up to one minute to get them.
         let people = try await ck.retrieve(
             recordType: "People"
         ) as [Person]
