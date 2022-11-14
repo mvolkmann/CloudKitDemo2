@@ -47,9 +47,15 @@ struct ContentView: View {
                 // NOTE: There can be a long delay (maybe a minute) until
                 // NOTE: the new records appear in a CloudKit Console query!
 
-                print("query records in private database in zone my-zone")
+                print(
+                    "In CloudKit Console, query records in private database and zone my-zone"
+                )
 
-                try await retrieveRecords(ck)
+                // When new records are created or records are updated, it
+                // can take up to a minute for CloudKit to index the changes.
+                // The new/modified records are not returned by
+                // subsequent queries until indexing is completed.
+                // try await retrieveRecords(ck)
             } catch {
                 print("error:", error)
             }

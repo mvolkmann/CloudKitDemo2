@@ -1,10 +1,9 @@
 import CloudKit
 
 protocol CloudKitable {
-    // This must be an optional initializer
-    // due to this line in the retrieve method:
-    // objects.append(T(record: record)!)
-    init?(record: CKRecord)
+    // This is used in the retrieve and retrieveMore methods below.
+    // See the lines `objects.append(T(record: record))`.
+    init(record: CKRecord)
 
     var record: CKRecord { get }
 }
@@ -171,7 +170,7 @@ struct CloudKit {
 
         for (_, result) in results {
             let record = try result.get()
-            objects.append(T(record: record)!)
+            objects.append(T(record: record))
         }
 
         try await retrieveMore(cursor, &objects)
@@ -190,7 +189,7 @@ struct CloudKit {
 
         for (_, result) in results {
             let record = try result.get()
-            objects.append(T(record: record)!)
+            objects.append(T(record: record))
         }
 
         // Recursive call.
