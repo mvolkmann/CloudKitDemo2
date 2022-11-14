@@ -91,7 +91,7 @@ struct CloudKit {
 
     // "C" in CRUD.
 
-    func create<T: CloudKitable>(item: T) async throws {
+    func create(item: some CloudKitable) async throws {
         try await database.save(item.record)
     }
 
@@ -114,7 +114,7 @@ struct CloudKit {
 
     // "D" in CRUD.
 
-    func delete<T: CloudKitable>(item: T) async throws {
+    func delete(item: some CloudKitable) async throws {
         try await database.deleteRecord(withID: item.record.recordID)
     }
 
@@ -173,7 +173,8 @@ struct CloudKit {
 
     // This uses a cursor to recursively retrieve all the requested records.
     private func retrieveMore<T: CloudKitable>(
-        _ cursor: Cursor?, _ objects: inout [T]
+        _ cursor: Cursor?,
+        _ objects: inout [T]
     ) async throws {
         guard let cursor = cursor else { return }
 
@@ -191,7 +192,8 @@ struct CloudKit {
 
     // "U" in CRUD.
 
-    func update<T: CloudKitable>(item: T) async throws {
+    // func update<T: CloudKitable>(item: T) async throws {
+    func update(item: some CloudKitable) async throws {
         try await database.save(item.record)
     }
 }
