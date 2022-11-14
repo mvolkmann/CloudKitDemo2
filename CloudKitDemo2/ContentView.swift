@@ -34,10 +34,9 @@ struct ContentView: View {
     private func crud() {
         Task {
             do {
-                let containerID =
-                    "iCloud.r.mark.volkmann.gmail.com.CloudKitDemo2"
-                let ck = CloudKit(containerID: containerID)
+                let ck = CloudKit()
 
+                // TODO: Can you implement this method?
                 // try await ck.deleteAll(recordType: "Pets")
                 // try await ck.deleteAll(recordType: "People")
 
@@ -57,7 +56,7 @@ struct ContentView: View {
                 // subsequent queries until indexing is completed.
                 // try await retrieveRecords(ck)
             } catch {
-                print("error:", error)
+                print("ContentView.crud error:", error)
             }
         }
     }
