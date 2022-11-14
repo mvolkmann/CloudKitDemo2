@@ -1,11 +1,9 @@
 import CloudKit
-import CoreData
-import UIKit
 
 protocol CloudKitable {
     // This must be an optional initializer
     // due to this line in the retrieve method:
-    // guard let item = T(record: record) else { return }
+    // objects.append(T(record: record)!)
     init?(record: CKRecord)
 
     var record: CKRecord { get }
